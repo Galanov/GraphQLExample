@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace GraphQL.Entities
+namespace GraphQLEx.Entities
 {
     public class Owner
     {

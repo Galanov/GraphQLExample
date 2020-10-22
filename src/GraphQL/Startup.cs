@@ -2,20 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using GraphQL.Contracts;
-using GraphQL.Entities;
-using GraphQL.Repository;
+using GraphQL;
+using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
+using GraphQLEx.Contracts;
+using GraphQLEx.Entities;
+using GraphQLEx.GraphQL.GraphQLSchema;
+using GraphQLEx.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace GraphQL
+namespace GraphQLEx
 {
     public class Startup
     {
@@ -34,9 +39,20 @@ namespace GraphQL
 
             services.AddScoped<IOwnerRepository, OwnerRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            
+            services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
+            services.AddScoped<AppSchema>();
+
+            services.AddGraphQL(o => { o.ExposeExceptions = false; })
+                .AddGraphTypes(ServiceLifetime.Scoped);
 
             services.AddControllers()
                 .AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+        
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +68,9 @@ namespace GraphQL
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            app.UseGraphQL<AppSchema>();
+            app.UseGraphQLPlayground(options: new GraphQLPlaygroundOptions());
 
             app.UseEndpoints(endpoints =>
             {

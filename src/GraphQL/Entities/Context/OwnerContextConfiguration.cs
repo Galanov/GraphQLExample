@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
-namespace GraphQL.Entities.Context
+namespace GraphQLEx.Entities.Context
 {
     public class OwnerContextConfiguration : IEntityTypeConfiguration<Owner>
     {

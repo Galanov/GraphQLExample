@@ -1,7 +1,9 @@
-using GraphQL.Contracts;
-using GraphQL.Entities;
+using GraphQLEx.Contracts;
+using GraphQLEx.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace GraphQL.Repository
+namespace GraphQLEx.Repository
 {
     public class OwnerRepository : IOwnerRepository
     {
@@ -10,6 +12,10 @@ namespace GraphQL.Repository
         public OwnerRepository(ApplicationContext context)
         {
             _context = context;
+        }
+
+        public IEnumerable<Owner> GetAll(){
+            return _context.Owners.ToList();
         }
     }
 }

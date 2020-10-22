@@ -1,11 +1,11 @@
-using GraphQL.Entities.Context;
+using GraphQLEx.Entities.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GraphQL.Entities
+namespace GraphQLEx.Entities
 {
     public class ApplicationContext : DbContext
     {

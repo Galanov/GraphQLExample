@@ -1,4 +1,4 @@
-namespace GraphQL.Contracts
+namespace GraphQLEx.Contracts
 {
     public interface IAccountRepository
     {

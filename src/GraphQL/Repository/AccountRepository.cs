@@ -1,7 +1,7 @@
-using GraphQL.Contracts;
-using GraphQL.Entities;
+using GraphQLEx.Contracts;
+using GraphQLEx.Entities;
 
-namespace GraphQL.Repository
+namespace GraphQLEx.Repository
 {
     public class AccountRepository : IAccountRepository
     {
