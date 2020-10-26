@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GraphQL;
 using GraphQL.Server;
+using GraphQL.DataLoader;
 using GraphQL.Server.Ui.Playground;
 using GraphQLEx.Contracts;
 using GraphQLEx.Entities;
@@ -44,7 +45,8 @@ namespace GraphQLEx
             services.AddScoped<AppSchema>();
 
             services.AddGraphQL(o => { o.ExposeExceptions = false; })
-                .AddGraphTypes(ServiceLifetime.Scoped);
+                .AddGraphTypes(ServiceLifetime.Scoped)
+                .AddDataLoader();
 
             services.AddControllers()
                 .AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
